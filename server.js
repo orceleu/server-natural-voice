@@ -22,15 +22,15 @@ app.listen(port, () => {
 
 app.post("/", async (req, res) => {
   //const { name } = req.body;
-  const { text, language, clean_voice } = req.body;
+  const { text, language, clean_voice, voice_sample } = req.body;
 
-  const output = await runReplicate(text, language, clean_voice);
+  const output = await runReplicate(text, language, clean_voice, voice_sample);
 
   res.json({ output: output });
 });
 
 ////////////////////
-async function runReplicate(text, language, clean_voice) {
+async function runReplicate(text, language, clean_voice, voice_sample) {
   const replicate = new Replicate({
     auth: "r8_f8974kvfG5yAUiEilrRScMg7V3Ol75R2MkdVH",
   });
@@ -44,9 +44,7 @@ async function runReplicate(text, language, clean_voice) {
       {
         input: {
           text: text,
-          //https://firebasestorage.googleapis.com/v0/b/my-saas-1.appspot.com/o/ElevenLabs_2024-03-03T21_40_50_Daniel.mp3?alt=media&token=3f0c18be-b49e-4221-ab20-129756932fc3
-          speaker:
-            "https://firebasestorage.googleapis.com/v0/b/my-saas-1.appspot.com/o/lobservateur.mp3.mp3?alt=media&token=8985ed8c-a960-4631-95f9-ed3ce9db476d",
+          speaker: voice_sample,
           language: language,
           cleanup_voice: clean_voice,
         },
